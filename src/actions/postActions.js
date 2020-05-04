@@ -13,20 +13,18 @@ export const fetchPosts = () => dispatch => {
 
 
 export const createPost = postData => dispatch => {
-    let headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    // headers.append('Authorization', 'Basic ' + base64.encode(username + ":" +  password));
-    headers.append('Origin','http://localhost:3000');
     fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(postData)
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(postData)
+    })
+      .then(res => res.json())
+      .then(post =>
+        dispatch({
+          type: NEW_POST,
+          payload: post
         })
-        .then(res => res.json())
-        .then(post => dispatch({
-            type: NEW_POST,
-            payload: post
-        }))
-};
+      );
+  };
